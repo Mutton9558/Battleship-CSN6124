@@ -3,11 +3,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <pthread.h>
 #define PORT 8080
 
 typedef struct {
-    // dynamically allocated name variable
-    char* name;
+    char name[30];
     int client_fd;
     int score;
 } Player;
@@ -26,7 +26,10 @@ void load_score(Player playerQueue[]){
             file = fopen("score.txt", "r");
         }
     }
-    // loop thru file here
+
+    // Username: Wins
+    // max 30 for username, 2 for the colon and whitespace, 10 for max int digits
+    char line[42];
     fclose(file);
 }
 
