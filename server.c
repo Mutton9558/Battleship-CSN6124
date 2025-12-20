@@ -4,7 +4,8 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <pthread.h>
-#define PORT 8080
+
+const int PORT = 8080;
 
 typedef struct {
     char name[30];
@@ -13,9 +14,7 @@ typedef struct {
 } Player;
 
 // Opens score file
-void load_score(Player playerQueue[]){
-    const int max_players = 4;
-    const playerCount = sizeof(playerQueue) / sizeof(playerQueue[0]);
+void load_score(Player *player){
     FILE *file = fopen("score.txt", "r");
     if(!file){
         file = fopen("score.txt", "w");
@@ -30,12 +29,27 @@ void load_score(Player playerQueue[]){
     // Username: Wins
     // max 30 for username, 2 for the colon and whitespace, 10 for max int digits
     char line[42];
+    int score;
+    char name[30];
+    while(fgets(line, 42, file)){
+        if(sscanf(line, "%[^:]: %d", name, &score) == 2){
+            if(name == player->name){
+                player->score = score;
+            }
+        }
+    }
     fclose(file);
 }
 
 int main(){
     printf("Big boy server thing uwu");
+    Player playerQueue[4];
+    int playerCount = 0;
+    // Socket stuff here
+    // if new players join
+    Player newPlayer;
+    // initialisation stuff later
+    playerQueue[playerCount] = newPlayer;
+    playerCount++;
     return 0;
-
-    // free all dynamically allocated variables
 }
